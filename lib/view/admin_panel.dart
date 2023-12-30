@@ -5,26 +5,6 @@ import 'package:flutter/material.dart';
 import '../models/car_name_model.dart';
 import '../models/transmission_model.dart';
 
-void main() async {
-  final dio = Dio();
-  dio.post('http://servername:2310/createcar', data: {
-    "name" ,
-    "price_usd" int,
-    "price_aed" int,
-    "color" text,
-    "killometers" int,
-    "regional_specs" text,
-    "transmission" text,
-    "steering_whell" text,
-    "motor_trim" longtext,
-    "body" text,
-    "state" text,
-    "guarantee" text,
-    "service_contact" text,
-    "description" longtext,
-  });
-}
-
 String _model = "Model of car";
 int _price_usd = 0;
 int _killometers = 0;
@@ -37,6 +17,27 @@ String _state = "State";
 String _gurantee = "Gurantee";
 String _service_contact = "Service Contact";
 String _description = "Description";
+
+void main() async {
+  final dio = Dio();
+  dio.post('http://servername:2310/createcar', data: {
+  "model": _model,
+  "price_usd": int,
+  "price_aed": int,
+  "color": text,
+  "killometers": int,
+  "regional_specs": text,
+  "transmission": text,
+  "steering_whell": text,
+  "motor_trim": longtext,
+  "body": text,
+  "state": text,
+  "guarantee": text,
+  "service_contact": text,
+  "description": longtext,
+  });
+}
+
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({super.key});
@@ -97,10 +98,11 @@ class _AdminPanelState extends State<AdminPanel> {
                             child: ExpansionTile(
                               title: Text(_model),
                               expandedCrossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              CrossAxisAlignment.start,
                               children: List.generate(
                                   cars.length,
-                                  (index) => GestureDetector(
+                                      (index) =>
+                                      GestureDetector(
                                         onTap: () {
                                           _model = cars[index];
                                           setState(() {});
@@ -218,7 +220,8 @@ class _AdminPanelState extends State<AdminPanel> {
                             child: ExpansionTile(
                               children: List.generate(
                                   transmissions.length,
-                                  (index) => GestureDetector(
+                                      (index) =>
+                                      GestureDetector(
                                         onTap: () {
                                           setState(() {});
                                           _transmission = transmissions[index];
@@ -250,16 +253,17 @@ class _AdminPanelState extends State<AdminPanel> {
                               title: Text(_steerlingWheel),
                               children: List.generate(
                                   steerlingWheels.length,
-                                  (index) => GestureDetector(
+                                      (index) =>
+                                      GestureDetector(
                                         onTap: () {
                                           setState(() {});
                                           _steerlingWheel =
-                                              steerlingWheels[index];
+                                          steerlingWheels[index];
                                         },
                                         child: Align(
                                             child: Text(
-                                          steerlingWheels[index],
-                                        )),
+                                              steerlingWheels[index],
+                                            )),
                                       )),
                             )),
                       ),
