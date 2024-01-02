@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:admin_panel/models/steerling_wheel_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../models/car_name_model.dart';
 import '../models/transmission_model.dart';
@@ -59,6 +62,15 @@ class _AdminPanelState extends State<AdminPanel> {
   final guranteeController = TextEditingController();
   final serviceContactController = TextEditingController();
   final descriptionController = TextEditingController();
+  final ImagePicker imagePicker = ImagePicker();
+  List<XFile>? imageFileList = [];
+
+  void selectImages() async {
+    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      imageFileList!.addAll(selectedImages);
+    }
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +79,7 @@ class _AdminPanelState extends State<AdminPanel> {
             toolbarHeight: 100,
             centerTitle: true,
             title: const Text(
-              "Your Car",
+              "Create your car",
               style: TextStyle(fontSize: 33, fontWeight: FontWeight.w400),
             ),
             backgroundColor: Colors.transparent,
@@ -76,7 +88,8 @@ class _AdminPanelState extends State<AdminPanel> {
           child: ListView(
             children: [
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                   child: Column(children: [
                     Column(children: [
                       const Padding(
@@ -386,8 +399,99 @@ class _AdminPanelState extends State<AdminPanel> {
                           ),
                         ])
                       ])
-                    ])
-                  ])),
+                    ]),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          child: FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xff000000)),
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8))),
+                            ),
+                            onPressed: () async {
+                              selectImages();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.car_repair),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                const Text(
+                                  'Choose image',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 300,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GridView.builder(
+                                      itemCount: imageFileList!.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Image.file(
+                                            File(imageFileList![index].path),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      }))),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      child: FilledButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xff000000)),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8))),
+                        ),
+                        onPressed: () async {
+                          selectImages();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            const Text(
+                              'Create',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),])),
             ],
           ),
         ));
