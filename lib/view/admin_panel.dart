@@ -8,26 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import '../models/car_name_model.dart';
 import '../models/transmission_model.dart';
 
-void main() async {
-  final dio = Dio();
-  dio.post('http://servername:2310/createcar', data: {
-    "model": _model,
-    "price_usd": _price_usd,
-    "price_aed": int,
-    "color": _color,
-    "killometers": _killometers,
-    "regional_specs": _regional_specs,
-    "transmission": _transmission,
-    "steering_whell": _steerlingWheel,
-    "motor_trim": _motor_trim,
-    "body": _body,
-    "state": _state,
-    "guarantee": _gurantee,
-    "service_contact": _service_contact,
-    "description": _description,
-  });
-}
-
 String _model = "Model of car";
 int _price_usd = 0;
 String _color = "Color";
@@ -65,11 +45,33 @@ class _AdminPanelState extends State<AdminPanel> {
   final ImagePicker imagePicker = ImagePicker();
   List<XFile>? imageFileList = [];
 
-  void selectImages() async {
-    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      imageFileList!.addAll(selectedImages);
+  selectImages() async {
+    final List<XFile> _selectedImages = await imagePicker.pickMultiImage();
+    if (_selectedImages!.isNotEmpty) {
+      imageFileList!.addAll(_selectedImages);
+      setState(() {});
     }
+  }
+
+  void serverPost() async {
+    final dio = Dio();
+    dio.post('http://servername:2310/createcar', data: {
+      "model": _model,
+      "price_usd": _price_usd,
+      "price_aed": int,
+      "color": _color,
+      "killometers": _killometers,
+      "regional_specs": _regional_specs,
+      "transmission": _transmission,
+      "steering_whell": _steerlingWheel,
+      "motor_trim": _motor_trim,
+      "body": _body,
+      "state": _state,
+      "guarantee": _gurantee,
+      "service_contact": _service_contact,
+      "description": _description,
+      "photo": imageFileList,
+    });
   }
 
   Widget build(BuildContext context) {
@@ -109,7 +111,10 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: ExpansionTile(
-                              title: Text(_model),
+                              title: Text(
+                                _model,
+                                style: TextStyle(color: Colors.white),
+                              ),
                               expandedCrossAxisAlignment:
                                   CrossAxisAlignment.start,
                               children: List.generate(
@@ -119,7 +124,15 @@ class _AdminPanelState extends State<AdminPanel> {
                                           _model = cars[index];
                                           setState(() {});
                                         },
-                                        child: Text(cars[index]),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(cars[index]),
+                                            ),
+                                          ],
+                                        ),
                                       )),
                             )),
                       ),
@@ -142,6 +155,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.only(start: 10)),
                               controller: priceController,
                               onChanged: (value) =>
                                   _price_usd = int.parse(priceController.text),
@@ -166,6 +185,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.only(start: 10)),
                               controller: colorController,
                               onChanged: (value) =>
                                   _color = colorController.text,
@@ -190,6 +215,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.only(start: 10)),
                               controller: miliegeController,
                               onChanged: (value) => _killometers =
                                   int.parse(miliegeController.text),
@@ -214,6 +245,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.only(start: 10)),
                               controller: regionalSpecsController,
                               onChanged: (value) =>
                                   _killometers = miliegeController.text as int,
@@ -238,7 +275,10 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: ExpansionTile(
-                              title: Text(_transmission),
+                              title: Text(
+                                _transmission,
+                                style: TextStyle(color: Colors.white),
+                              ),
                               children: List.generate(
                                   transmissions.length,
                                   (index) => GestureDetector(
@@ -246,7 +286,14 @@ class _AdminPanelState extends State<AdminPanel> {
                                           setState(() {});
                                           _transmission = transmissions[index];
                                         },
-                                        child: Text(transmissions[index]),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(4.0),
+                                              child: Text(transmissions[index]),
+                                            ),
+                                          ],
+                                        ),
                                       )),
                             )),
                       ),
@@ -269,7 +316,10 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: ExpansionTile(
-                              title: Text(_steerlingWheel),
+                              title: Text(
+                                _steerlingWheel,
+                                style: TextStyle(color: Colors.white),
+                              ),
                               children: List.generate(
                                   steerlingWheels.length,
                                   (index) => GestureDetector(
@@ -279,9 +329,16 @@ class _AdminPanelState extends State<AdminPanel> {
                                               steerlingWheels[index];
                                         },
                                         child: Align(
-                                            child: Text(
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Text(
                                           steerlingWheels[index],
-                                        )),
+                                        ),
+                                                ),
+                                              ],
+                                            )),
                                       )),
                             )),
                       ),
@@ -304,6 +361,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                                style: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsetsDirectional.only(start: 10)),
                                 controller: motorRimController,
                                 onChanged: (value) =>
                                     _motor_trim = motorRimController.text)),
@@ -327,6 +390,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.only(start: 10)),
                               controller: bodyController,
                             )),
                       ),
@@ -349,6 +418,12 @@ class _AdminPanelState extends State<AdminPanel> {
                                 color: const Color(0x00212121),
                                 borderRadius: BorderRadius.circular(12)),
                             child: TextField(
+                                style: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsetsDirectional.only(start: 10)),
                                 controller: stateController,
                                 onChanged: (value) =>
                                     _state = stateController.text)),
@@ -371,6 +446,13 @@ class _AdminPanelState extends State<AdminPanel> {
                                   color: const Color(0x00212121),
                                   borderRadius: BorderRadius.circular(12)),
                               child: TextField(
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding:
+                                          EdgeInsetsDirectional.only(
+                                              start: 10)),
                                   controller: guranteeController,
                                   onChanged: (value) =>
                                       _gurantee = guranteeController.text)),
@@ -393,6 +475,13 @@ class _AdminPanelState extends State<AdminPanel> {
                                     color: const Color(0x00212121),
                                     borderRadius: BorderRadius.circular(12)),
                                 child: TextField(
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding:
+                                            EdgeInsetsDirectional.only(
+                                                start: 10)),
                                     controller: serviceContactController,
                                     onChanged: (value) => _service_contact =
                                         serviceContactController.text)),
@@ -415,6 +504,7 @@ class _AdminPanelState extends State<AdminPanel> {
                             ),
                             onPressed: () async {
                               selectImages();
+                              setState(() {});
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -473,7 +563,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                   borderRadius: BorderRadius.circular(8))),
                         ),
                         onPressed: () async {
-                          selectImages();
+                          serverPost();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -485,13 +575,13 @@ class _AdminPanelState extends State<AdminPanel> {
                             const Text(
                               'Create',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
+                                  fontWeight: FontWeight.w400, fontSize: 16),
                             ),
                           ],
                         ),
                       ),
-                    ),])),
+                    ),
+                  ])),
             ],
           ),
         ));
