@@ -1,4 +1,4 @@
-List transmissions = [
+final List transmissions = [
   "AT",
   "MT",
   "AMT",

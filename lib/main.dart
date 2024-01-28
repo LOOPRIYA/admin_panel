@@ -1,4 +1,5 @@
 import 'package:admin_panel/view/admin_panel.dart';
+import 'package:admin_panel/view/service_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         ).apply(bodyColor: Color(0xffe0e0e0), displayColor: Color(0xffe0e0e0)),
       ),
       debugShowCheckedModeBanner: false,
-      home: AdminPanel(),
+      home: ServiceView(),
     );
   }
 }
