@@ -1,19 +1,29 @@
 import 'package:admin_panel/models/all_service_text_model.dart';
 import 'package:admin_panel/view/services/general_repair_view.dart';
+import 'package:admin_panel/view/services/major_service_view.dart';
 import 'package:flutter/material.dart';
 
 import '../models/all_service_icons_model.dart';
 import '../models/special_offers_models.dart';
+
 class ServiceView extends StatefulWidget {
   const ServiceView({super.key});
+
   @override
   State<ServiceView> createState() => _ServiceViewState();
 }
+
 class _ServiceViewState extends State<ServiceView> {
   final middleLeadingStyle =
       const TextStyle(fontSize: 18, fontWeight: FontWeight.w900);
-  final bigLeadingStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xff8875FF));
-  final smallLeadingStyle = const TextStyle(fontSize: 13, color: Color(0xff7A7A7A));
+  final bigLeadingStyle = const TextStyle(
+      fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xff8875FF));
+  final firstBigLeadingStyle = const TextStyle(
+      fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white);
+  final smallLeadingStyle =
+      const TextStyle(fontSize: 13, color: Color(0xff7A7A7A));
+  final firstSmallLeadingStyle =
+      const TextStyle(fontSize: 13, color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +75,13 @@ class _ServiceViewState extends State<ServiceView> {
                                     height: 140,
                                     width: 150,
                                     child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MajorServiceView())),
                                         style: ButtonStyle(
                                           backgroundColor:
-                                               MaterialStatePropertyAll<Color>(index == 0? Colors.green: Colors.white),
+                                              MaterialStatePropertyAll<Color>(
+                                                  index == 0
+                                                      ? Colors.green
+                                                      : Colors.white),
                                           shape: MaterialStateProperty.all<
                                               RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
@@ -88,7 +101,9 @@ class _ServiceViewState extends State<ServiceView> {
                                                 children: [
                                                   Text(
                                                     nameMajorService[index],
-                                                    style: bigLeadingStyle,
+                                                    style: index == 0
+                                                        ? firstBigLeadingStyle
+                                                        : bigLeadingStyle,
                                                   ),
                                                   Text(
                                                     newMajorService[index],
@@ -100,7 +115,9 @@ class _ServiceViewState extends State<ServiceView> {
                                                   ),
                                                   Text(
                                                     lastMajorService[index],
-                                                    style: smallLeadingStyle,
+                                                    style: index == 0
+                                                        ? firstSmallLeadingStyle
+                                                        : smallLeadingStyle,
                                                   )
                                                 ],
                                               )),
@@ -138,23 +155,25 @@ class _ServiceViewState extends State<ServiceView> {
                           height: 72,
                           width: 72,
                           child: ElevatedButton(
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => GeneralRepairView())),
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  const MaterialStatePropertyAll<Color>(
-                                      Color(0xff363636)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          GeneralRepairView())),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    const MaterialStatePropertyAll<Color>(
+                                        Color(0xff363636)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: Image(image: AssetImage(icons[index]),)
-                          ),
+                              child: Image(
+                                image: AssetImage(icons[index]),
+                              )),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 12),
